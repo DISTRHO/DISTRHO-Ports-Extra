@@ -59,10 +59,10 @@
 #endif
 
 #define JucePlugin_SilenceInProducesSilenceOut  1
-#define JucePlugin_TailLengthSeconds    0
+#define JucePlugin_TailLengthSeconds            0
 #define JucePlugin_EditorRequiresKeyboardFocus  1
 #define JucePlugin_VersionCode          0x10000
-#define JucePlugin_VersionString        "0.0.0"
+#define JucePlugin_VersionString        "1.0.0"
 #define JucePlugin_VSTUniqueID          JucePlugin_PluginCode
 #define JucePlugin_VSTCategory          kPlugCategEffect
 #define JucePlugin_AUSubType            JucePlugin_PluginCode

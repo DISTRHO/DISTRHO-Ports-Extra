@@ -4,7 +4,7 @@
   Cabbage is free software; you can redistribute it
   and/or modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.   
+  version 2.1 of the License, or (at your option) any later version.
 
   Cabbage is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,198 +20,93 @@
 #ifndef SOUNDFILEWAVEFORM_H
 #define SOUNDFILEWAVEFORM_H
 
-#include "JuceHeader.h" 
+#include "JuceHeader.h"
 #include "CabbageUtils.h"
 #include "CabbageLookAndFeel.h"
 
-
+class ZoomButton;
 //=================================================================
 // display a sound file as a waveform..
 //=================================================================
-class WaveformDisplay : public Component,
-						public Timer
+class Soundfiler : public Component,
+    public ChangeBroadcaster,
+    private ScrollBar::Listener,
+    public ChangeListener
 {
 public:
-	WaveformDisplay(BufferingAudioSource &source, int sr, Colour col):
-	thumbnailCache (5), 
-	source(&source), 
-	colour(col),
-	sampleRate(sr),
-	currentPlayPosition(0),
-	mouseDownX(0),
-	mouseUpX(0),
-	drawWaveform(true),
-	numOfSamples(0)
-	{	
-    formatManager.registerBasicFormats();  
-	thumbnail = new AudioThumbnail(512, formatManager, thumbnailCache); 
-	setSize(100, 100);
-	}
-	
-	~WaveformDisplay()
-	{	
-		source = nullptr;
-	}
-	
-	void resized()
-	{
-	}
-	
-    void setFile (const File& file, bool firstTime)
-    {
-		if(file.existsAsFile()){
-			if(firstTime){
-			thumbnail->setSource (new FileInputSource(file));
-			}
-			else{
-			//FileInputStream* inFileStream = new FileInputStream(file); // jatFile is the saved thumbnail file
-			thumbnail = nullptr;
-			thumbnail = new AudioThumbnail(512, formatManager, thumbnailCache); 
-			thumbnail->setSource (new FileInputSource(file));
-			//delete inFileStream;
-			}
-			drawWaveform=true;
-		}
-		else
-			drawWaveform = false;
+    Soundfiler(int sr, Colour col, Colour fcol);
+    ~Soundfiler();
 
-		startTime = 0;
-        endTime = thumbnail->getTotalLength();
-		repaint();
+    double getCurrentPlayPos()
+    {
+        return currentPlayPosition;
     }
 
-    void setZoomFactor (double amount)
+    int getCurrentPlayPosInSamples()
     {
-        if (thumbnail->getTotalLength() > 0)
-        {
-            const double newScale = jmax (0.001, thumbnail->getTotalLength() * (1.0 - jlimit (0.0, 0.99, amount)));
-            const double timeAtCentre = xToTime (getWidth() / 2.0f);
-            //startTime = timeAtCentre - newScale * 0.5;
-            //endTime = timeAtCentre + newScale * 0.5;
-            repaint();
-        }
+        return currentPlayPosition*sampleRate;
     }
 
-    void paint (Graphics& g)
+    int getLoopLengthInSamples()
     {
-        g.fillAll (Colours::black);
-        g.setColour (colour);
-		if(drawWaveform){
-			if (thumbnail->getTotalLength() > 0)
-			{
-				thumbnail->drawChannels (g, getLocalBounds(),
-										startTime, endTime, 2.0f);
-			}
-			else
-			{
-				g.setFont (14.0f);
-				g.drawFittedText ("(No audio file selected)", getLocalBounds(), Justification::centred, 2);
-			}
-			g.setColour(colour.brighter(.4f));
-			g.drawLine(timeToX(currentPlayPosition), 0, timeToX(currentPlayPosition), getHeight(), 2);	
-		}
+        return loopLength*sampleRate;
     }
 
-    void timerCallback()
-    {
-		Viewport* const viewport = findParentComponentOfClass <Viewport> (); //Get the parent viewport
-		currentPlayPosition = source->getNextReadPosition()/sampleRate;
-		if(viewport != nullptr) //Check for nullness
-		viewport->setViewPosition(jmax(0.f, timeToX(currentPlayPosition)-100), 0);
-		repaint();
-    }
-
-    void mouseDown (const MouseEvent& e)
-    {
-		if(e.mods.isCommandDown()){
-		if(e.mods.isLeftButtonDown())
-			this->setSize(jmin(1000, this->getWidth()+100), getHeight());
-		else
-			this->setSize(jmax(400, this->getWidth()-100), getHeight());
-			Logger::writeToLog("command down");
-		}
-			
-		source->setNextReadPosition (jmax (0.0, xToTime ((float) e.x)*sampleRate));
-		currentPlayPosition = jmax (0.0, xToTime ((float) e.x));
-		mouseDownX = e.x;
-		repaint();
-    }
-
-    void mouseDrag(const MouseEvent& e)
-    {
-        mouseUpX = e.x;
-		currentPlayPosition = jmax (0.0, xToTime ((float) e.x));
-        repaint();
-    }
-	
-	void rewindToStart(){
-		if(source)
-		source->setNextReadPosition (0);
-		currentPlayPosition = 0.f;	
-}
-	
-	void skipForward(){
-		currentPlayPosition = currentPlayPosition+1.f; 
-	}
-	
-    AudioThumbnailCache thumbnailCache;
-    ScopedPointer<AudioThumbnail> thumbnail;
-    ScopedPointer<BufferingAudioSource> source;
-	float sampleRate;
-
-private:
-	AudioFormatManager formatManager;
-	int64 numOfSamples;
-	Colour colour;
-	int mouseDownX, mouseUpX;
-    double startTime, endTime;
-	Rectangle<int> localBounds;
-	
-	double currentPlayPosition;
-	bool drawWaveform;
-
-    DrawableRectangle currentPositionMarker;
+    void setScrubberPos(double pos);
 
     float timeToX (const double time) const
     {
-        return getWidth() * (float) ((time - startTime) / (endTime - startTime));
+        return getWidth() * (float) ((time - visibleRange.getStart()) / (visibleRange.getLength()));
     }
 
     double xToTime (const float x) const
     {
-        return (x / getWidth()) * (endTime - startTime) + startTime;
+        return (x / getWidth()) * (visibleRange.getLength()) + visibleRange.getStart();
     }
-};
 
 
-class Soundfiler : public Component,
-					public Button::Listener,
-					public ChangeListener
-{
-public:
-	Soundfiler(CabbageAudioSource& audioSource, String fileName, int sr, Colour colour, Colour fontcolour);
-	~Soundfiler(){
-	cabbageAudioSource->isSourcePlaying = false;
-	cabbageAudioSource->audioSourceBuffer = nullptr;
-	cabbageAudioSource->removeAllChangeListeners();
-	cabbageAudioSource = nullptr;	
-	};
-	
-    // This is just a standard Juce paint method...
+    void setZoomFactor (double amount);
+    void setFile (const File& file);
+    void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel);
+    void setWaveform(AudioSampleBuffer buffer, int channels);
+    void createImage(String filename);
+
+private:
+    Image img;
+    //Graphics& graphics;
+    int imgCount;
+    Range<double> visibleRange;
+    double zoom;
+    ScopedPointer<DrawableRectangle> currentPositionMarker;
+    ScopedPointer<ScrollBar> scrollbar;
+    void setRange(Range<double> newRange);
+    void resized();
     void paint (Graphics& g);
-	void changeListenerCallback(ChangeBroadcaster *source);
-	void resized();
-	void buttonClicked(Button *button);
-	ScopedPointer<WaveformDisplay> waveformDisplay;
-	ScopedPointer<ImageButton> playButton;	
-	ScopedPointer<ImageButton> skipToStartButton;
-	ScopedPointer<ImageButton> skipToEndButton;
-	ScopedPointer<TextButton> loadFile;
-	ScopedPointer<ToggleButton> loopFile;
-	ScopedPointer<Viewport> viewport;
-	CabbageAudioSource* cabbageAudioSource;
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Soundfiler);
-	
+    void mouseDown (const MouseEvent& e);
+    void mouseUp(const MouseEvent& e);
+    void mouseEnter(const MouseEvent& e);
+    void mouseDrag(const MouseEvent& e);
+    void mouseExit(const MouseEvent& e);
+    bool reDraw;
+    double scrubberPosition;
+    void scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRangeStart);
+    void changeListenerCallback(ChangeBroadcaster *source);
+    ScopedPointer<ZoomButton> zoomIn, zoomOut;
+
+    AudioFormatManager formatManager;
+    float sampleRate;
+    float regionWidth;
+    Image waveformImage;
+    AudioThumbnailCache thumbnailCache;
+    ScopedPointer<AudioThumbnail> thumbnail;
+    Colour colour, fontcolour;
+    int mouseDownX, mouseUpX;
+    Rectangle<int> localBounds;
+    double loopLength;
+    double loopStart;
+    double currentPlayPosition;
+    bool drawWaveform;
 };
+
 
 #endif // SOUNDFILEWAVEFORM_H
