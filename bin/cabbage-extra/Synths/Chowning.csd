@@ -22,7 +22,7 @@ keyboard pos(10, 240), size(540, 60)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--d -n -+rtmidi=null -M0 -b1024 
+-d -n -+rtmidi=null -M0 -b1024 -m0d
 </CsOptions>
 <CsInstruments>
 
@@ -205,7 +205,7 @@ aflt1          reson     afm,kcf,kbw,1
 aflt2          reson     afm,kcf*.9, kbw*1.11,1       
 abal           balance   aflt1+aflt2,afm       
 
-asig           envlpx    abal,.2, gifc5, gifc5*.39, gifc5, 1                       
+asig           envlpx    abal, .2, gifc5, gifc5*.39, gifc5, 1, .01                       
 
 xout asig*kgate         
 
