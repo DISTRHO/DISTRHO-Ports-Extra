@@ -29,7 +29,7 @@
  #define JucePlugin_LV2URI                 "http://www.osar.fr/protoplug#gen"
 #endif
 
-#define JucePlugin_WantsState           1
+#define JucePlugin_WantsLV2State        1
 #define JucePlugin_WantsLV2TimePos      1
 
 #define JucePlugin_Manufacturer           "pac"
