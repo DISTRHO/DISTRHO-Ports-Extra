@@ -29,6 +29,7 @@ install:
 	# make dirs
 	install -d $(DESTDIR)$(PREFIX)/lib/lv2/
 	install -d $(DESTDIR)$(PREFIX)/lib/vst/
+	install -d $(DESTDIR)$(PREFIX)/share/
 
 	# install plugins
 ifneq (,$(wildcard $(CURDIR)/bin/lv2/cabbage-Additive.lv2))
@@ -39,7 +40,7 @@ ifneq (,$(wildcard $(CURDIR)/bin/vst/cabbage-Additive.so))
 endif
 
 	# install protoplug files
-	cp -r ports/protoplug/ProtoplugFiles $(DESTDIR)$(PREFIX)/share/
+	cp -r ports/protoplug/ProtoplugFiles/ $(DESTDIR)$(PREFIX)/share/
 
 # -----------------------------------------
 # clean
