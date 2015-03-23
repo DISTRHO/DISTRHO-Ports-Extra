@@ -31,10 +31,10 @@ install:
 	install -d $(DESTDIR)$(PREFIX)/lib/vst/
 
 	# install plugins
-ifneq (,$(wildcard bin/lv2/TheFunction.lv2))
+ifneq (,$(wildcard $(CURDIR)/bin/lv2/cabbage-Additive.lv2))
 	cp -r bin/lv2/*.lv2/ $(DESTDIR)$(PREFIX)/lib/lv2/
 endif
-ifneq (,$(wildcard bin/vst/TheFunction.so))
+ifneq (,$(wildcard $(CURDIR)/bin/vst/cabbage-Additive.so))
 	cp -r bin/vst/*      $(DESTDIR)$(PREFIX)/lib/vst/
 endif
 
