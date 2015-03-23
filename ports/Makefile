@@ -14,6 +14,8 @@ lv2:
 	$(MAKE) -C cabbage/LV2-fx
 	$(MAKE) -C cabbage/LV2-ins
 	$(MAKE) -C cabbage/LV2-midi
+	$(MAKE) -C protoplug/LV2-fx
+	$(MAKE) -C protoplug/LV2-gen
 
 # -----------------------------------------
 # vst
@@ -24,6 +26,8 @@ vst:
 	$(MAKE) -C cabbage/VST-fx
 	$(MAKE) -C cabbage/VST-ins
 	$(MAKE) -C cabbage/VST-midi
+	$(MAKE) -C protoplug/VST-fx
+	$(MAKE) -C protoplug/VST-gen
 
 # -----------------------------------------
 # clean
@@ -34,12 +38,16 @@ clean:
 	$(MAKE) clean -C cabbage/LV2-fx
 	$(MAKE) clean -C cabbage/LV2-ins
 	$(MAKE) clean -C cabbage/LV2-midi
+	$(MAKE) clean -C protoplug/LV2-fx
+	$(MAKE) clean -C protoplug/LV2-gen
 
 	# VST
 	$(MAKE) clean -C argotlunar/VST
 	$(MAKE) clean -C cabbage/VST-fx
 	$(MAKE) clean -C cabbage/VST-ins
 	$(MAKE) clean -C cabbage/VST-midi
+	$(MAKE) clean -C protoplug/VST-fx
+	$(MAKE) clean -C protoplug/VST-gen
 
 	rm -rf */LV2/intermediate
 	rm -rf */VST/intermediate
