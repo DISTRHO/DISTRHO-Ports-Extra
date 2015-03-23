@@ -21,11 +21,16 @@
  #define JucePlugin_Name                   "Lua Protoplug Fx"
  #define JucePlugin_Desc                   "Lua Protoplug Effect"
  #define JucePlugin_PluginCode             'ppgf'
+ #define JucePlugin_LV2URI                 "http://www.osar.fr/protoplug#fx"
 #else
  #define JucePlugin_Name                   "Lua Protoplug Gen"
  #define JucePlugin_Desc                   "Lua Protoplug Generator (Instrument)"
  #define JucePlugin_PluginCode             'ppgg'
+ #define JucePlugin_LV2URI                 "http://www.osar.fr/protoplug#gen"
 #endif
+
+#define JucePlugin_WantsState           1
+#define JucePlugin_WantsLV2TimePos      1
 
 #define JucePlugin_Manufacturer           "pac"
 #define JucePlugin_ManufacturerWebsite    ""
