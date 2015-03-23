@@ -1,7 +1,7 @@
 
 dofile("../../../scripts/make-project.lua")
 
-package = make_juce_vst_project("argotlunar")
+package = make_juce_vst_project("argotlunar2")
 
 package.includepaths = {
   package.includepaths,
