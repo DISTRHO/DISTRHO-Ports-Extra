@@ -1247,6 +1247,14 @@ CabbagePluginAudioProcessor* JUCE_CALLTYPE createCabbagePluginFilter(String inpu
 #else
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
+    static bool needsInitialize = true;
+
+    if (needsInitialize)
+    {
+        csoundInitialize(CSOUNDINIT_NO_SIGNAL_HANDLER|CSOUNDINIT_NO_ATEXIT);
+        needsInitialize = false;
+    }
+
     return new CabbagePluginAudioProcessor();
 }
 #endif
