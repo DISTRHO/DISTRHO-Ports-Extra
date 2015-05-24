@@ -31,6 +31,7 @@
 
 #define JucePlugin_WantsLV2State        1
 #define JucePlugin_WantsLV2TimePos      1
+#define JucePlugin_WantsLV2Presets      0
 
 #define JucePlugin_Manufacturer           "pac"
 #define JucePlugin_ManufacturerWebsite    ""

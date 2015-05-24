@@ -40,6 +40,10 @@
 
 #endif
 
+#define JucePlugin_WantsLV2Presets        0
+#define JucePlugin_WantsLV2State          0
+#define JucePlugin_WantsLV2TimePos        0
+
 //==============================================================================
 // Audio plugin settings..
 

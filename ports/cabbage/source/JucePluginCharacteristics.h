@@ -80,7 +80,9 @@
 #define JucePlugin_AAXPluginId          JucePlugin_PluginCode
 #define JucePlugin_AAXCategory          AAX_ePlugInCategory_Dynamics
 
-#define JucePlugin_LV2URI               "urn:cabbage:plugin"
+#define JucePlugin_LV2URI               String("urn:cabbage:")+File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension().replace("cabbage-","")
+#define JucePlugin_WantsLV2Presets      0
+#define JucePlugin_WantsLV2State        0
 #define JucePlugin_WantsLV2TimePos      1
 
 #endif   // __PLUGINCHARACTERISTICS_81BD1C82__

@@ -125,5 +125,7 @@
 
 #define JucePlugin_LV2URI               "http://argotlunar.info/"
 #define JucePlugin_WantsLV2TimePos      1
+#define JucePlugin_WantsLV2Presets      0
+#define JucePlugin_WantsLV2State        0
 
 #endif  // __JUCE_APPCONFIG_ULIIGD__
