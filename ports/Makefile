@@ -16,6 +16,8 @@ lv2:
 	$(MAKE) -C cabbage/LV2-midi
 	$(MAKE) -C protoplug/LV2-fx
 	$(MAKE) -C protoplug/LV2-gen
+	$(MAKE) -C PdPulp/LV2-fx
+	$(MAKE) -C PdPulp/LV2-ins
 	$(MAKE) -C radium-compressor/LV2-mono
 	$(MAKE) -C radium-compressor/LV2-stereo
 
@@ -30,6 +32,8 @@ vst:
 	$(MAKE) -C cabbage/VST-midi
 	$(MAKE) -C protoplug/VST-fx
 	$(MAKE) -C protoplug/VST-gen
+	$(MAKE) -C PdPulp/VST-fx
+	$(MAKE) -C PdPulp/VST-ins
 	$(MAKE) -C radium-compressor/VST-mono
 	$(MAKE) -C radium-compressor/VST-stereo
 
@@ -44,6 +48,8 @@ clean:
 	$(MAKE) clean -C cabbage/LV2-midi
 	$(MAKE) clean -C protoplug/LV2-fx
 	$(MAKE) clean -C protoplug/LV2-gen
+	$(MAKE) clean -C PdPulp/LV2-fx
+	$(MAKE) clean -C PdPulp/LV2-ins
 	$(MAKE) clean -C radium-compressor/LV2-mono
 	$(MAKE) clean -C radium-compressor/LV2-stereo
 
@@ -54,6 +60,8 @@ clean:
 	$(MAKE) clean -C cabbage/VST-midi
 	$(MAKE) clean -C protoplug/VST-fx
 	$(MAKE) clean -C protoplug/VST-gen
+	$(MAKE) clean -C PdPulp/VST-fx
+	$(MAKE) clean -C PdPulp/VST-ins
 	$(MAKE) clean -C radium-compressor/VST-mono
 	$(MAKE) clean -C radium-compressor/VST-stereo
 

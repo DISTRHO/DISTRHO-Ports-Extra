@@ -84,5 +84,6 @@
 #define JucePlugin_WantsLV2Presets      0
 #define JucePlugin_WantsLV2State        0
 #define JucePlugin_WantsLV2TimePos      1
+#define JucePlugin_WantsLV2FixedBlockSize 1
 
 #endif   // __PLUGINCHARACTERISTICS_81BD1C82__

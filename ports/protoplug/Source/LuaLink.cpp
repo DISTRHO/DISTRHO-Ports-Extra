@@ -376,7 +376,7 @@ double LuaLink::getTailLengthSeconds()
 void LuaLink::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages, AudioPlayHead* ph)
 {
 	bool res = callVoidOverride("plugin_processBlock"	, LUA_TNUMBER, (double)buffer.getNumSamples(),
-									LUA_TLIGHTUSERDATA, buffer.getArrayOfChannels(),
+									LUA_TLIGHTUSERDATA, buffer.getArrayOfWritePointers(),
 									LUA_TLIGHTUSERDATA, &midiMessages,
 									LUA_TLIGHTUSERDATA, ph,
 									LUA_TNUMBER, pfx->getSampleRate(),
