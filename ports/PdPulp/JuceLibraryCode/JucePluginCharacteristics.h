@@ -26,6 +26,7 @@
  #define JucePlugin_WantsMidiInput         1
  #define JucePlugin_VSTCategory            kPlugCategSynth
  #define JucePlugin_PluginCode             'PDLP'
+ #define JucePlugin_LV2URI "http://pdpulp.audiosalt.com"
 #else
  #define JucePlugin_Name                   "Pd Pulp FX"
  #define JucePlugin_MaxNumInputChannels    2
@@ -35,6 +36,7 @@
  #define JucePlugin_WantsMidiInput         0
  #define JucePlugin_VSTCategory            kPlugCategEffect
  #define JucePlugin_PluginCode             'PDLF'
+ #define JucePlugin_LV2URI "http://pdpulp.audiosalt.com#fx"
 #endif
 
 #ifndef  JucePlugin_Desc
@@ -124,8 +126,6 @@
 #ifndef  JucePlugin_AAXDisableMultiMono
  #define JucePlugin_AAXDisableMultiMono    0
 #endif
-
-#define JucePlugin_LV2URI "http://pdpulp.audiosalt.com"
 
 #define JucePlugin_WantsLV2Presets 0
 #define JucePlugin_WantsLV2State   1
