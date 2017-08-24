@@ -16,7 +16,8 @@
 PROTO_API exLagrangeInterpolator LagrangeInterpolator_create()
 { 
 	LagrangeInterpolator li;
-	exLagrangeInterpolator ret(*(exLagrangeInterpolator*)(&li)); // look away children
+	LagrangeInterpolator* liptr = &li;
+	exLagrangeInterpolator ret(*(exLagrangeInterpolator*)liptr); // look away children
 	return ret;
 }
 

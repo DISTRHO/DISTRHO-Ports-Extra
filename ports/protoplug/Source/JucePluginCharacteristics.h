@@ -29,6 +29,8 @@
  #define JucePlugin_LV2URI                 "http://www.osar.fr/protoplug#gen"
 #endif
 
+#define JucePlugin_IsMidiEffect 0
+
 #define JucePlugin_WantsLV2State        1
 #define JucePlugin_WantsLV2TimePos      1
 #define JucePlugin_WantsLV2Presets      0

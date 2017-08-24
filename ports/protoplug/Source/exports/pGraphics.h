@@ -180,7 +180,7 @@ PROTO_API     void Graphics_drawRoundedRectangle2(pGraphics self, exRectangle_fl
 
 
 PROTO_API     void Graphics_setPixel(pGraphics self, int x, int y) 
-{	self.g->setPixel(x, y); }
+{	self.g->fillRect(x, y, 1, 1); }
 
 
 PROTO_API     void Graphics_fillEllipse(pGraphics self, float x, float y, float width, float height) 

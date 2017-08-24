@@ -68,6 +68,8 @@ public:
     FT_Error result;
 
     result = FT_Init_FreeType (&m_ft);
+
+    ignoreUnused(result);
   }
 
   ~FreeTypeLibrary ()
@@ -136,18 +138,18 @@ private:
   };
 #endif
 
-private:
-  FreeTypeLibrary::Ptr m_ft;
-  bool m_useFreeTypeRendering; // true to use FreeType to render the outlines
-  float m_minHintedHeight;
-  float m_maxHintedHeight;
-  float m_scale;
-  float m_kerningScale;
-  int m_kerningMode;
-
 protected:
   FT_Face m_face;
   int m_loadFlags;
+
+private:
+  FreeTypeLibrary::Ptr m_ft;
+  float m_minHintedHeight;
+  float m_maxHintedHeight;
+  bool m_useFreeTypeRendering; // true to use FreeType to render the outlines
+  float m_scale;
+  float m_kerningScale;
+  int m_kerningMode;
 
 public:
   FreeTypeFace (float minHintedHeight,
@@ -630,7 +632,7 @@ private:
       return 0;
     }
 
-    ImagePixelData* clone()
+    Ptr clone()
     {
       ImagePixelData* dup = new GlyphImage (width, height, m_lineStride, m_imageData);
       //dup->userData = userData; /* unfortunate */
@@ -895,7 +897,7 @@ public:
 
   Typeface::Ptr createTypefaceForFont (const Font& font)
   {
-    Typeface::Ptr typeFace = 0;
+    Typeface::Ptr typeFace = nullptr;
 
     for (int i=0; i<m_faces.size(); i++)
     {
