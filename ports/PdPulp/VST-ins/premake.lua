@@ -13,9 +13,11 @@ package.buildoptions = {
 
 package.defines = {
   package.defines,
+  'INSTALL_PREFIX=\\"/usr\\"',
   "PULP_SYNTH=1",
   "USEAPI_DUMMY",
   "PD",
+  'PDGUIDIR=\\"tcl/\\"',
   "HAVE_LIBDL",
   "HAVE_UNISTD_H",
   "HAVE_ALLOCA_H",
