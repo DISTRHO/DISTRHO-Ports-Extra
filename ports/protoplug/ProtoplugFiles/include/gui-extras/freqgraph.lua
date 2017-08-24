@@ -3,7 +3,7 @@
 an interactive histogram-ish frequency graph 
 used in "spectral filter" and "pitch distort"
 usage : 
-	local Freqgraph = require "include/pac/freqgraph"
+	local Freqgraph = require "include/gui-extras/freqgraph"
 	local fg = Freqgraph {
 		-- required paramters :
 			-- an array (Lua or C) containing the values to be read and modified by the interactive graph
@@ -173,7 +173,7 @@ function M:InitBackBuffer()
 	
 	-- draw the Y axis labels
 	g:saveState()
-	g:addTransform(J.AffineTransform(0, -1, self.bounds.w,     1, 0, self.frame.y))
+	g:addTransform(J.AffineTransform(0, -1, self.bounds.w, 1, 0, self.frame.y))
 	g:setFont(16)
 	g:drawText(self.yAxis.name, 0, 0, self.frame.h, 20, J.Justification.centred)
 	g:restoreState()

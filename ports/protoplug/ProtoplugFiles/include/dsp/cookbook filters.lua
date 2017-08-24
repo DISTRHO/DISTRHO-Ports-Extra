@@ -1,4 +1,4 @@
--- Cookbook Filters Module FLOAT TEST
+-- Cookbook Filters Module
 -- Based on Worp Filter.lua implementation by Ico Doornekamp. (https://github.com/zevv/worp)
 -- Based on the Cookbook formulae by Robert Bristow-Johnson  <rbj@audioimagination.com>
 -- osar.fr
@@ -26,22 +26,20 @@ filter types :
 	eq: Peaking EQ filter
 --]]
 
-local Float = ffi.typeof("float[1]")
---[[local function Float (n)
-	return ffi.cast("float", n)
-end--]]
-
 local function Filter(params)
 	local a0, a1, a2, b0, b1, b2
-	local x0, x1, x2 = Float(0), Float(0), Float(0)
-	local y0, y1, y2 = Float(0), Float(0), Float(0)
+	local x0, x1, x2 = 0, 0, 0
+	local y0, y1, y2 = 0, 0, 0
 	local params = params or {type = "lp", f = 440, gain = 0, Q = 1}
 	
 	public = {
 		update = function (args)
+			args = args or {}
 			for k,v in pairs(args) do
 				params[k] = v
 			end
+			if params.f < 10 then params.f = 10 end
+			if not plugin.isSampleRateKnown() then return end
 			--print (
 			--	"type "..params.type..
 			--	", f "..params.f..
@@ -91,20 +89,38 @@ local function Filter(params)
 			else
 				error("Unsupported filter type " .. params.type)
 			end
-			print(a0)
-			a0, a1, a2, b0, b1, b2 = Float(a0), Float(a1), Float(a2), Float(b0), Float(b1), Float(b2)
-			print(a0[0])
 		end;
-		
+		phaseDelay = function(frequency)
+			local omegaT = 2 * math.pi * frequency / plugin.getSampleRate();
+			local real, imag = 0.0, 0.0;
+			for i,b in ipairs{b0,b1,b2} do
+				real = real + b/a0 * math.cos( (i-1) * omegaT );
+				imag = imag - b/a0 * math.sin( (i-1) * omegaT );
+			end
+			
+			local phase = math.atan2( imag, real );
+			
+			real = 0.0; imag = 0.0;
+			for i,a in ipairs{a0,a1,a2} do
+				real = real + a/a0 * math.cos( (i-1) * omegaT );
+				imag = imag - a/a0 * math.sin( (i-1) * omegaT );
+			end
+			
+			phase = phase - math.atan2( imag, real );
+			phase = math.fmod( -phase, 2 * math.pi );
+			return phase / omegaT;
+		end;
 		process = function (x0)
-			y2[0], y1[0] = y1[0], y0[0]
-			y0[0] = (b0[0] / a0[0]) * x0[0] + (b1[0] / a0[0]) * x1[0] + (b2[0] / a0[0]) * x2[0] - (a1[0] / a0[0]) * y1[0] - (a2[0] / a0[0]) * y2[0]
-			x2[0], x1[0] = x1[0], x0[0]
-			return y0[0]
+			y2, y1 = y1, y0
+			y0 = (b0 / a0) * x0 + (b1 / a0) * x1 + (b2 / a0) * x2 - (a1 / a0) * y1 - (a2 / a0) * y2
+			x2, x1 = x1, x0
+			return y0
 		end;
 	}
 	
-	public.update(params)
+	-- initialize when the samplerate in known
+	plugin.addHandler("prepareToPlay", public.update)
+	
 	return public
 end
 
