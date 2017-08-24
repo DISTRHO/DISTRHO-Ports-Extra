@@ -32,10 +32,10 @@ install:
 	install -d $(DESTDIR)$(PREFIX)/share/
 
 	# install plugins
-ifneq (,$(wildcard $(CURDIR)/bin/lv2/cabbage-Additive.lv2))
+ifneq (,$(wildcard $(CURDIR)/bin/lv2/argotlunar2.lv2))
 	cp -r bin/lv2/*.lv2/ $(DESTDIR)$(PREFIX)/lib/lv2/
 endif
-ifneq (,$(wildcard $(CURDIR)/bin/vst/cabbage-Additive.so))
+ifneq (,$(wildcard $(CURDIR)/bin/vst/argotlunar2.so))
 	cp -r bin/vst/*      $(DESTDIR)$(PREFIX)/lib/vst/
 endif
 
