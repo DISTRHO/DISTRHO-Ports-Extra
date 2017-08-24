@@ -7,12 +7,12 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 3.1.1
+  Created with Introjucer version: 3.2.0
 
   ------------------------------------------------------------------------------
 
   The Introjucer is part of the JUCE library - "Jules' Utility Class Extensions"
-  Copyright 2004-13 by Raw Material Software Ltd.
+  Copyright (c) 2015 - ROLI Ltd.
 
   ==============================================================================
 */
@@ -28,7 +28,7 @@
 
 //==============================================================================
 MainComponent::MainComponent (PureDataAudioProcessor& processor)
-    : PureDataAudioProcessorEditor(processor)
+    : PureDataAudioProcessorEditor(processor), p(&processor)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -83,23 +83,43 @@ MainComponent::MainComponent (PureDataAudioProcessor& processor)
     statusField->setColour (TextEditor::textColourId, Colours::black);
     statusField->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (label = new Label ("new label",
-                                          TRANS("PD Pulp")));
-    label->setFont (Font ("DIN Alternate", 29.20f, Font::bold));
-    label->setJustificationType (Justification::topLeft);
-    label->setEditable (false, false, false);
-    label->setColour (Label::textColourId, Colours::white);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (title = new Label ("new label",
+                                          TRANS("Pd Pulp")));
+    title->setFont (Font ("DIN Alternate", 29.20f, Font::bold));
+    title->setJustificationType (Justification::topLeft);
+    title->setEditable (false, false, false);
+    title->setColour (Label::textColourId, Colours::white);
+    title->setColour (TextEditor::textColourId, Colours::black);
+    title->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (label2 = new Label ("new label",
+    addAndMakeVisible (slogan = new Label ("new label",
                                            TRANS("a pure data audio plugin runtime environment")));
-    label2->setFont (Font (14.00f, Font::italic));
-    label2->setJustificationType (Justification::bottomRight);
-    label2->setEditable (false, false, false);
-    label2->setColour (Label::textColourId, Colour (0x94ffffff));
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    slogan->setFont (Font (14.00f, Font::italic));
+    slogan->setJustificationType (Justification::bottomRight);
+    slogan->setEditable (false, false, false);
+    slogan->setColour (Label::textColourId, Colour (0x94ffffff));
+    slogan->setColour (TextEditor::textColourId, Colours::black);
+    slogan->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (version = new Label ("new label",
+                                            TRANS("v0.0.0")));
+    version->setFont (Font (10.00f, Font::italic));
+    version->setJustificationType (Justification::bottomRight);
+    version->setEditable (false, false, false);
+    version->setColour (Label::textColourId, Colour (0x46ffffff));
+    version->setColour (TextEditor::textColourId, Colours::black);
+    version->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (libraryLink = new HyperlinkButton (TRANS("Patch Library"),
+                                                          URL ("http://patchstorage.com/platform/pd-pulp/")));
+    libraryLink->setTooltip (TRANS("http://patchstorage.com/platform/pd-pulp/"));
+    libraryLink->setColour (HyperlinkButton::textColourId, Colour (0x53ffffff));
+
+    addAndMakeVisible (libraryLink2 = new HyperlinkButton (TRANS("Wiki"),
+                                                           URL ("https://github.com/logsol/Pd-Pulp/wiki")));
+    libraryLink2->setTooltip (TRANS("https://github.com/logsol/Pd-Pulp/wiki"));
+    libraryLink2->setButtonText (TRANS("Wiki"));
+    libraryLink2->setColour (HyperlinkButton::textColourId, Colour (0x53ffffff));
 
 
     //[UserPreSize]
@@ -109,11 +129,16 @@ MainComponent::MainComponent (PureDataAudioProcessor& processor)
 
 
     //[Constructor] You can add your own custom stuff here..
-    PureDataAudioProcessor& p = (PureDataAudioProcessor&) processor;
-    pathField->setText(p.getPatchFile().getFileName(), dontSendNotification);
+
+    String versionStr;
+    versionStr << "v" << JucePlugin_VersionString;
+    version->setText(versionStr, dontSendNotification);
+
+    pathField->setText(p->getPatchFile().getFileName(), dontSendNotification);
+    title->setText(p->getName(), dontSendNotification);
+    slogan->setText(JucePlugin_Desc, dontSendNotification);
 
     startTimer(25);
-
     //[/Constructor]
 }
 
@@ -137,8 +162,11 @@ MainComponent::~MainComponent()
     reloadButton = nullptr;
     editButton = nullptr;
     statusField = nullptr;
-    label = nullptr;
-    label2 = nullptr;
+    title = nullptr;
+    slogan = nullptr;
+    version = nullptr;
+    libraryLink = nullptr;
+    libraryLink2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -172,13 +200,16 @@ void MainComponent::resized()
     sendSlider8->setBounds (197, 246, 98, 120);
     sendSlider9->setBounds (293, 246, 98, 120);
     sendSlider10->setBounds (389, 246, 98, 120);
-    findButton->setBounds (368, 56, 104, 24);
-    pathField->setBounds (24, 56, 328, 24);
-    reloadButton->setBounds (352, 90, 64, 20);
-    editButton->setBounds (424, 90, 48, 20);
-    statusField->setBounds (25, 91, 311, 17);
-    label->setBounds (22, 16, 170, 32);
-    label2->setBounds (168, 24, 304, 16);
+    findButton->setBounds (358, 60, 120, 24);
+    pathField->setBounds (24, 60, 312, 24);
+    reloadButton->setBounds (358, 90, 64, 20);
+    editButton->setBounds (430, 90, 48, 20);
+    statusField->setBounds (25, 95, 311, 17);
+    title->setBounds (22, 16, 170, 32);
+    slogan->setBounds (168, 19, 304, 16);
+    version->setBounds (425, 33, 46, 16);
+    libraryLink->setBounds (369, 34, 64, 16);
+    libraryLink2->setBounds (336, 34, 27, 16);
     //[UserResized] Add your own custom resize handling here..
 
     //[/UserResized]
@@ -202,14 +233,15 @@ void MainComponent::buttonClicked (Button* buttonThatWasClicked)
         {
             pathField->setText(fc.getResult().getFileName(), dontSendNotification);
             p.setPatchFile(fc.getResult());
-            p.reloadPatch(NULL);
+            p.reloadPatch(0.0);
+            p.setParameterDefaults();
         }
         //[/UserButtonCode_findButton]
     }
     else if (buttonThatWasClicked == reloadButton)
     {
         //[UserButtonCode_reloadButton] -- add your button handler code here..
-        p.reloadPatch(NULL);
+        p.reloadPatch(0.0);
         //[/UserButtonCode_reloadButton]
     }
     else if (buttonThatWasClicked == editButton)
@@ -228,8 +260,7 @@ void MainComponent::buttonClicked (Button* buttonThatWasClicked)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void MainComponent::timerCallback()
 {
-    PureDataAudioProcessor& p = (PureDataAudioProcessor&) processor;
-    statusField->setText(p.status, dontSendNotification);
+    statusField->setText(p->status, dontSendNotification);
 }
 //[/MiscUserCode]
 
@@ -245,7 +276,7 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="MainComponent" componentName=""
                  parentClasses="public PureDataAudioProcessorEditor, public Timer"
-                 constructorParams="PureDataAudioProcessor&amp; processor" variableInitialisers="PureDataAudioProcessorEditor(processor)"
+                 constructorParams="PureDataAudioProcessor&amp; processor" variableInitialisers="PureDataAudioProcessorEditor(processor), p(&amp;processor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="500" initialHeight="385">
   <BACKGROUND backgroundColour="ff303030"/>
@@ -280,37 +311,50 @@ BEGIN_JUCER_METADATA
              explicitFocusOrder="0" pos="389 246 98 120" sourceFile="SendSlider.cpp"
              constructorParams="10, processor"/>
   <TEXTBUTTON name="new button" id="1e5168d1e5fff12c" memberName="findButton"
-              virtualName="" explicitFocusOrder="0" pos="368 56 104 24" bgColOff="ffadadad"
+              virtualName="" explicitFocusOrder="0" pos="358 60 120 24" bgColOff="ffadadad"
               bgColOn="ff727272" buttonText="Find patch..." connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <LABEL name="new label" id="90c1e98cfe7db5e9" memberName="pathField"
-         virtualName="" explicitFocusOrder="0" pos="24 56 328 24" bkgCol="21000000"
+         virtualName="" explicitFocusOrder="0" pos="24 60 312 24" bkgCol="21000000"
          textCol="ffbcbcbc" edTextCol="ff000000" edBkgCol="0" labelText=""
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
   <TEXTBUTTON name="new button" id="46837e8b39cdf5ab" memberName="reloadButton"
-              virtualName="" explicitFocusOrder="0" pos="352 90 64 20" tooltip="Reload the pd patch file."
+              virtualName="" explicitFocusOrder="0" pos="358 90 64 20" tooltip="Reload the pd patch file."
               bgColOff="ffadadad" bgColOn="ff727272" buttonText="Reload" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="new button" id="fe82abb32a3951b0" memberName="editButton"
-              virtualName="" explicitFocusOrder="0" pos="424 90 48 20" tooltip="Opens PD editor if existent."
+              virtualName="" explicitFocusOrder="0" pos="430 90 48 20" tooltip="Opens PD editor if existent."
               bgColOff="ffadadad" bgColOn="ff727272" buttonText="Edit" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <LABEL name="new label" id="90ee85fe76c3c3e8" memberName="statusField"
-         virtualName="" explicitFocusOrder="0" pos="25 91 311 17" bkgCol="0"
+         virtualName="" explicitFocusOrder="0" pos="25 95 311 17" bkgCol="0"
          textCol="bcbcbcbc" edTextCol="ff000000" edBkgCol="0" labelText=""
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="11" bold="0" italic="0" justification="36"/>
-  <LABEL name="new label" id="4f92306c17723f92" memberName="label" virtualName=""
+  <LABEL name="new label" id="4f92306c17723f92" memberName="title" virtualName=""
          explicitFocusOrder="0" pos="22 16 170 32" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="PD Pulp" editableSingleClick="0"
+         edTextCol="ff000000" edBkgCol="0" labelText="Pd Pulp" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="DIN Alternate"
          fontsize="29.199999999999999289" bold="1" italic="0" justification="9"/>
-  <LABEL name="new label" id="eb75ff4acec7a7ab" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="168 24 304 16" textCol="94ffffff"
+  <LABEL name="new label" id="eb75ff4acec7a7ab" memberName="slogan" virtualName=""
+         explicitFocusOrder="0" pos="168 19 304 16" textCol="94ffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="a pure data audio plugin runtime environment"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="14" bold="0" italic="1" justification="18"/>
+  <LABEL name="new label" id="4479dbe59f1893ef" memberName="version" virtualName=""
+         explicitFocusOrder="0" pos="425 33 46 16" textCol="46ffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="v0.0.0" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="10" bold="0" italic="1" justification="18"/>
+  <HYPERLINKBUTTON name="Patch Library" id="7cd34084675dc20f" memberName="libraryLink"
+                   virtualName="" explicitFocusOrder="0" pos="369 34 64 16" tooltip="http://patchstorage.com/platform/pd-pulp/"
+                   textCol="53ffffff" buttonText="Patch Library" connectedEdges="0"
+                   needsCallback="0" radioGroupId="0" url="http://patchstorage.com/platform/pd-pulp/"/>
+  <HYPERLINKBUTTON name="Patch Library" id="6742fabf4e69a8c8" memberName="libraryLink2"
+                   virtualName="" explicitFocusOrder="0" pos="336 34 27 16" tooltip="https://github.com/logsol/Pd-Pulp/wiki"
+                   textCol="53ffffff" buttonText="Wiki" connectedEdges="0" needsCallback="0"
+                   radioGroupId="0" url="https://github.com/logsol/Pd-Pulp/wiki"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -7,12 +7,12 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 3.1.1
+  Created with Introjucer version: 3.2.0
 
   ------------------------------------------------------------------------------
 
   The Introjucer is part of the JUCE library - "Jules' Utility Class Extensions"
-  Copyright 2004-13 by Raw Material Software Ltd.
+  Copyright (c) 2015 - ROLI Ltd.
 
   ==============================================================================
 */
@@ -22,6 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
+#include "PluginProcessor.h"
 //[/Headers]
 
 
@@ -41,12 +42,12 @@ class SendSlider  : public Component,
 {
 public:
     //==============================================================================
-    SendSlider (int index, AudioProcessor& processor);
+    SendSlider (int index, PureDataAudioProcessor& processor);
     ~SendSlider();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void timerCallback();
+    void timerCallback() override;
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -59,7 +60,7 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     int index;
-    AudioProcessor& processor;
+    PureDataAudioProcessor& processor;
     //[/UserVariables]
 
     //==============================================================================
