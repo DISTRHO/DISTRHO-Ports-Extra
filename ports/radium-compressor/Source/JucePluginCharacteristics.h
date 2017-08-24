@@ -153,4 +153,6 @@
  #define JucePlugin_AAXDisableBypass       0
 #endif
 
+#define JucePlugin_IsMidiEffect 0
+
 #endif  // __JUCE_APPCONFIG_B3USK2__

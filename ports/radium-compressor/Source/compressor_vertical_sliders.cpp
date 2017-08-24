@@ -394,7 +394,7 @@ struct Comp : public MyWidget, public MyTimer{
 
   void timer(){ // virtual method from MyTimer
     if(isVisible()){
-      if(gui_parameters_are_dirty.compareAndSetValue(0,1)){
+      if(gui_parameters_are_dirty.compareAndSetBool(0,1)){
         set_gui_parameters();
         updateBackgroundImage();
         update();

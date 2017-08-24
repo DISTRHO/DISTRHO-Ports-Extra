@@ -155,10 +155,10 @@ void PureDataAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
     
     // In case we have more outputs than inputs, this code clears any output channels that didn't contain input data, (because these aren't guaranteed to be empty - they may contain garbage).
     // I've added this to avoid people getting screaming feedback when they first compile the plugin, but obviously you don't need to this code if your algorithm already fills all the output channels.
-    for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
+    for (int i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    int numChannels = jmin (getNumInputChannels(), getNumOutputChannels());
+    int numChannels = jmin (getTotalNumInputChannels(), getTotalNumOutputChannels());
     int len = buffer.getNumSamples();
     int idx = 0;
     
@@ -325,9 +325,9 @@ void PureDataAudioProcessor::reloadPatch (double sampleRate)
     }
     
     pd = new pd::PdBase;
-    pd->init (getNumInputChannels(), getNumOutputChannels(), sampleRate);
+    pd->init (getTotalNumInputChannels(), getTotalNumOutputChannels(), sampleRate);
     
-    int numChannels = jmin (getNumInputChannels(), getNumOutputChannels());
+    int numChannels = jmin (getTotalNumInputChannels(), getTotalNumOutputChannels());
     pdInBuffer.calloc (pd->blockSize() * numChannels);
     pdOutBuffer.calloc (pd->blockSize() * numChannels);
     

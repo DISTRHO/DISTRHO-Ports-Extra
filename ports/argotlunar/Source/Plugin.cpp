@@ -103,7 +103,7 @@ void Plugin::releaseResources()
 
 void Plugin::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-    if (getNumInputChannels() != 2 && getNumOutputChannels() != 2) {
+    if (getTotalNumInputChannels() != 2 && getTotalNumOutputChannels() != 2) {
         return;
     }
     float* chan1 = buffer.getWritePointer(0);

@@ -127,6 +127,8 @@
  #define JucePlugin_AAXDisableMultiMono    0
 #endif
 
+#define JucePlugin_IsMidiEffect 0
+
 #define JucePlugin_WantsLV2Presets 0
 #define JucePlugin_WantsLV2State   1
 #define JucePlugin_WantsLV2TimePos 0
