@@ -299,7 +299,7 @@ void PureDataAudioProcessor::setStateInformation (const void* data, int sizeInBy
                 File path(child->getStringAttribute ("fullpath"));
                 if (path.exists()) {
                     patchfile = path; // creates a copy
-                    reloadPatch(NULL);
+                    reloadPatch(0.0);
                 }
             }
             

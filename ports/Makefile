@@ -11,9 +11,9 @@ plugins: lv2 vst
 lv2:
 	install -d ../bin/lv2
 	$(MAKE) -C argotlunar/LV2
-	$(MAKE) -C cabbage/LV2-fx
-	$(MAKE) -C cabbage/LV2-ins
-	$(MAKE) -C cabbage/LV2-midi
+# 	$(MAKE) -C cabbage/LV2-fx
+# 	$(MAKE) -C cabbage/LV2-ins
+# 	$(MAKE) -C cabbage/LV2-midi
 	$(MAKE) -C protoplug/LV2-fx
 	$(MAKE) -C protoplug/LV2-gen
 	$(MAKE) -C PdPulp/LV2-fx
@@ -27,9 +27,9 @@ lv2:
 vst:
 	install -d ../bin/vst
 	$(MAKE) -C argotlunar/VST
-	$(MAKE) -C cabbage/VST-fx
-	$(MAKE) -C cabbage/VST-ins
-	$(MAKE) -C cabbage/VST-midi
+# 	$(MAKE) -C cabbage/VST-fx
+# 	$(MAKE) -C cabbage/VST-ins
+# 	$(MAKE) -C cabbage/VST-midi
 	$(MAKE) -C protoplug/VST-fx
 	$(MAKE) -C protoplug/VST-gen
 	$(MAKE) -C PdPulp/VST-fx

@@ -404,7 +404,7 @@ void LuaLink::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages,
 									0);
 #ifdef _PROTOGEN
 	if (!res) {
-		for (int channel = 0; channel < pfx->getNumOutputChannels(); ++channel)
+		for (int channel = 0; channel < pfx->getTotalNumOutputChannels(); ++channel)
 		{
 			buffer.clear (channel, 0, buffer.getNumSamples());
 		}

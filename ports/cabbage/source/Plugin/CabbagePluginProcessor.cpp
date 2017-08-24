@@ -172,7 +172,7 @@ CabbagePluginAudioProcessor::CabbagePluginAudioProcessor(String inputfile, bool 
 
 #ifdef CSOUND6 
         csoundParams = new CSOUND_PARAMS();
-        csoundParams->nchnls_override = this->getNumOutputChannels();
+        csoundParams->nchnls_override = this->getTotalNumOutputChannels();
         csoundParams->displays = 0;
         csound->SetParams(csoundParams);
 #endif
@@ -390,7 +390,7 @@ CabbagePluginAudioProcessor::CabbagePluginAudioProcessor():
     startTimer(20);
 #ifdef CSOUND6
     csoundParams = new CSOUND_PARAMS();
-    csoundParams->nchnls_override = this->getNumOutputChannels();
+    csoundParams->nchnls_override = this->getTotalNumOutputChannels();
     csoundParams->displays = 0;
     csound->SetParams(csoundParams);
 #endif
@@ -1055,7 +1055,7 @@ void CabbagePluginAudioProcessor::startRecording ()
                     threadedWriter = new AudioFormatWriter::ThreadedWriter (writer, backgroundThread, 32768);
 
                     // Reset our recording thumbnail
-                    //thumbnail.reset (writer->getNumChannels(), writer->getSampleRate());
+                    //thumbnail.reset (writer->getTotalNumChannels(), writer->getSampleRate());
                     nextSampleNum = 0;
 
                     // And now, swap over our active writer pointer so that the audio callback will start using it..
@@ -1727,7 +1727,7 @@ void CabbagePluginAudioProcessor::prepareToPlay (double sampRate, int samplesPer
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-	//showMessage(String(this->getNumOutputChannels()));
+	//showMessage(String(this->getTotalNumOutputChannels()));
     keyboardState.reset();
     sampleRate = sampRate;
 }
@@ -1773,7 +1773,7 @@ void CabbagePluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiB
 				ccBuffer = midiMessages;
 
 				//if no inputs are used clear buffer in case it's not empty..
-				if(getNumInputChannels()==0)
+				if(getTotalNumInputChannels()==0)
 					buffer.clear();
 
 	#if JucePlugin_ProducesMidiOutput
@@ -1807,10 +1807,10 @@ void CabbagePluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiB
 					}
 					if(csCompileResult==OK)
 					{
-						for(int channel = 0; channel < getNumOutputChannels(); channel++ )
+						for(int channel = 0; channel < getTotalNumOutputChannels(); channel++ )
 						{
 							audioBuffer = buffer.getWritePointer(channel,0);
-							pos = csndIndex*getNumOutputChannels();
+							pos = csndIndex*getTotalNumOutputChannels();
 							CSspin[channel+pos] = audioBuffer[i]*cs_scale;
 							audioBuffer[i] = (CSspout[channel+pos]/cs_scale);
 						}
@@ -1828,7 +1828,7 @@ void CabbagePluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiB
 			}//if not compiled just mute output
 			else
 			{
-				for(int channel = 0; channel < getNumInputChannels(); channel++)
+				for(int channel = 0; channel < getTotalNumInputChannels(); channel++)
 				{
 					audioBuffer = buffer.getWritePointer(channel,0);
 					for(int i=0; i<numSamples; i++, csndIndex++)
