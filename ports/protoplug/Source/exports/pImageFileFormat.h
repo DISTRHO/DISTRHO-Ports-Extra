@@ -17,7 +17,7 @@ PROTO_API pImage ImageFileFormat_loadFrom2(const char *filename)
 { 
 	pImage i = { new Image() };
 	File f = ProtoplugDir::Instance()->getDir().getChildFile(filename);
-	if (f != File::nonexistent)
+	if (f.exists())
 		*i.i = ImageFileFormat::loadFrom(f);
 	return i;
 }

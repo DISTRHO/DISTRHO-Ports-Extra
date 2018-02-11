@@ -1298,7 +1298,7 @@ void CabbagePluginAudioProcessor::changeListenerCallback(ChangeBroadcaster *sour
 StringArray CabbagePluginAudioProcessor::getTableStatement(int tableNum)
 {
 StringArray fdata;
-fdata.add(String::empty);
+fdata.add(String());
 #ifndef Cabbage_No_Csound
     if(csCompileResult==OK)
     {
@@ -1632,28 +1632,28 @@ const String CabbagePluginAudioProcessor::getParameterName (int index)
 {
     if(index<(int)guiCtrls.size())//make sure index isn't out of range
         return guiCtrls.getReference(index).getStringProp(CabbageIDs::channel);
-    else return String::empty;
+    else return String();
 }
 
 const String CabbagePluginAudioProcessor::getParameterText (int index)
 {
     if(index<(int)guiCtrls.size())//make sure index isn't out of range
         return String (guiCtrls.getReference(index).getNumProp(CabbageIDs::value), 2);
-    else return String::empty;
+    else return String();
 }
 
 const String CabbagePluginAudioProcessor::getInputChannelName (int channelIndex) const
 {
     if(channelIndex<(int)guiCtrls.size())//make sure index isn't out of range
         return String (channelIndex + 1);
-    else return String::empty;
+    else return String();
 }
 
 const String CabbagePluginAudioProcessor::getOutputChannelName (int channelIndex) const
 {
     if(channelIndex<(int)guiCtrls.size())//make sure index isn't out of range
         return String (channelIndex + 1);
-    else return String::empty;
+    else return String();
 }
 
 bool CabbagePluginAudioProcessor::isInputChannelStereoPair (int /*index*/) const
@@ -1715,7 +1715,7 @@ void CabbagePluginAudioProcessor::setCurrentProgram (int /*index*/)
 
 const String CabbagePluginAudioProcessor::getProgramName (int /*index*/)
 {
-    return String::empty;
+    return String();
 }
 
 void CabbagePluginAudioProcessor::changeProgramName (int /*index*/, const String& /*newName*/)

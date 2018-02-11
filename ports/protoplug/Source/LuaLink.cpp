@@ -323,9 +323,9 @@ String LuaLink::callStringOverride(const char *fname, ...)
 	int numArgs = startVarargOverride(fname, args);
     va_end(args);
 	if (numArgs<0)
-		return String::empty; // state or function does not exist
+		return String(); // state or function does not exist
 	if (safepcall (fname, numArgs, 1, 0))
-		return String::empty; // function crashed
+		return String(); // function crashed
 	return safetostring();
 }
 
@@ -358,7 +358,7 @@ String LuaLink::safetostring()
 {
 	if (!ls->isstring(-1)) {
 		ls->settop(0);
-		return String::empty; // there is no string
+		return String(); // there is no string
 	}
 	String ret = ls->tostring(-1);
 	ls->settop(0);

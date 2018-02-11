@@ -50,7 +50,7 @@ MainComponent::MainComponent (PureDataAudioProcessor& processor)
     findButton->setColour (TextButton::buttonOnColourId, Colour (0xff727272));
 
     addAndMakeVisible (pathField = new Label ("new label",
-                                              String::empty));
+                                              String()));
     pathField->setFont (Font (15.00f, Font::plain));
     pathField->setJustificationType (Justification::centred);
     pathField->setEditable (false, false, false);
@@ -74,7 +74,7 @@ MainComponent::MainComponent (PureDataAudioProcessor& processor)
     editButton->setColour (TextButton::buttonOnColourId, Colour (0xff727272));
 
     addAndMakeVisible (statusField = new Label ("new label",
-                                                String::empty));
+                                                String()));
     statusField->setFont (Font (11.00f, Font::plain));
     statusField->setJustificationType (Justification::centred);
     statusField->setEditable (false, false, false);

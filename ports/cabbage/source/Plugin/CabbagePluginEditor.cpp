@@ -2461,7 +2461,7 @@ void CabbagePluginAudioProcessorEditor::buttonClicked(Button* button)
                     {
                         if(getFilter()->getGUILayoutCtrls(i).getStringProp(CabbageIDs::type)==String("filebutton"))
                         {
-                            WildcardFileFilter wildcardFilter ("*.*", String::empty, "Foo files");
+                            WildcardFileFilter wildcardFilter ("*.*", String(), "Foo files");
 
 
                             const String filetype = getFilter()->getGUILayoutCtrls(i).getStringProp("filetype");

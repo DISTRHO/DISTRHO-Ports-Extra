@@ -1694,7 +1694,7 @@ String CabbageGUIClass::getStringProp(Identifier prop, int index)
     		else if(prop.equalsIgnoreCase("snapshotData"))
     			return snapshotData[index].trim();
     		else*/
-    return String::empty;
+    return String();
 }
 //===================================================================
 Rectangle<int> CabbageGUIClass::getComponentBounds()
@@ -1720,7 +1720,7 @@ String CabbageGUIClass::getStringProp(Identifier prop)
         //Logger::writeToLog(prop+":"+strings.toString());
         return strings.toString();
     }
-	return String::empty;
+	return String();
 }
 //===================================================================
 StringArray CabbageGUIClass::getStringArrayProp(Identifier prop)
@@ -1825,7 +1825,7 @@ void CabbageGUIClass::setStringProp(Identifier prop, String val)
 String CabbageGUIClass::getColourProp(Identifier prop)
 {
     jassert(1);
-	return String::empty;
+	return String();
 }
 //===================================================================
 String CabbageGUIClass::getStringForIdentifier(var propsArray, String identifier, String type)

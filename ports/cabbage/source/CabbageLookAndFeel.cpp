@@ -1155,7 +1155,7 @@ Font CabbageLookAndFeel::getComboBoxFont (ComboBox& box)
 
 Label* CabbageLookAndFeel::createComboBoxTextBox (ComboBox&)
 {
-    return new Label (String::empty, String::empty);
+    return new Label (String(), String());
 }
 
 void CabbageLookAndFeel::positionComboBoxText (ComboBox& box, Label& label)

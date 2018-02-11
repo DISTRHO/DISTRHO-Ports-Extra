@@ -376,7 +376,7 @@ void Plugin::saveBankXml(File* file)
 
     // output bank to file
     XmlElement* bankXml = program_bank->createBankXml();
-    file->replaceWithText(bankXml->createDocument(String::empty));
+    file->replaceWithText(bankXml->createDocument(String()));
     delete bankXml;
     editor_program_update_pending = true;
     setSavedState(true);
@@ -402,6 +402,6 @@ void Plugin::saveCurrentProgramXml(File* file)
 
     //output program to file
     XmlElement* program = program_bank->createProgramXml(current_program);
-    file->replaceWithText(program->createDocument(String::empty));
+    file->replaceWithText(program->createDocument(String()));
     delete program;
 }

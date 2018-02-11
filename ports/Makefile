@@ -27,9 +27,9 @@ lv2:
 vst:
 	install -d ../bin/vst
 	$(MAKE) -C argotlunar/VST
-# 	$(MAKE) -C cabbage/VST-fx
-# 	$(MAKE) -C cabbage/VST-ins
-# 	$(MAKE) -C cabbage/VST-midi
+# # 	$(MAKE) -C cabbage/VST-fx
+# # 	$(MAKE) -C cabbage/VST-ins
+# # 	$(MAKE) -C cabbage/VST-midi
 	$(MAKE) -C protoplug/VST-fx
 	$(MAKE) -C protoplug/VST-gen
 	$(MAKE) -C PdPulp/VST-fx

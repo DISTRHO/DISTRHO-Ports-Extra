@@ -132,7 +132,7 @@ const String RadiumCompressorAudioProcessor::getParameterName (int index)
   case radium_compressor::COMP_EFF_BYPASS:
     return "Bypass";
   default:
-    return String::empty;
+    return String();
   }
 }
 
@@ -161,7 +161,7 @@ const String RadiumCompressorAudioProcessor::getParameterText (int index)
   case radium_compressor::COMP_EFF_OUTPUT_VOLUME:
     return String(value>0.0 ? "+" : "") + String(value,1) + " dB";
   default:
-    return String::empty;
+    return String();
   }
 }
 
@@ -224,7 +224,7 @@ void RadiumCompressorAudioProcessor::setCurrentProgram (int index)
 
 const String RadiumCompressorAudioProcessor::getProgramName (int index)
 {
-    return String::empty;
+    return String();
 }
 
 void RadiumCompressorAudioProcessor::changeProgramName (int index, const String& newName)

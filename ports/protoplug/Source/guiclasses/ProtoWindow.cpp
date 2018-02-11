@@ -188,7 +188,7 @@ void ProtoWindow::readPrefs()
 	}
 	/*	// writePrefs()
 	XmlElement *e = commMgr.getKeyMappings()->createXml(false);
-	e->writeToFile(ProtoplugDir::Instance()->getDir().getChildFile("prefs.xml"), String::empty);
+	e->writeToFile(ProtoplugDir::Instance()->getDir().getChildFile("prefs.xml"), String());
 	delete e;*/
 }
 

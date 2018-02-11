@@ -100,7 +100,7 @@ public:
 	{
 		for (int i=0; i<NPARAMS; i++) {
 			String s = processor->luli->getParameterName(i);
-			if (s==String::empty) {
+			if (s==String()) {
 				s = "nameless";
 				labels[i]->setColour(Label::textColourId, Colours::grey);
 			} else

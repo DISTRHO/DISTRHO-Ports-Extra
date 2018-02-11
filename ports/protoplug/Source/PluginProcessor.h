@@ -41,7 +41,7 @@ public:
 	int getNumPrograms()									{ return 1; }
 	int getCurrentProgram()									{ return 1; }
 	void setCurrentProgram (int /*index*/)					{ }
-	const String getProgramName (int /*index*/)				{ return String::empty; }
+	const String getProgramName (int /*index*/)				{ return String(); }
 	void changeProgramName (int /*index*/, const String& /*newName*/)	{ }
 	void prepareToPlay (double /*sampleRate*/, int /*samplesPerBlock*/)	{ }
 	void releaseResources()	{ }
